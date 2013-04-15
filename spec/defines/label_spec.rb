@@ -10,10 +10,10 @@ describe 'edac::label' do
 
   it { should contain_class('edac') }
 
-  it { should contain_concat_fragment('foo+02.edac.labels.db') }
+  it { should contain_concat_fragment('edac.labels.db+02_foo.db') }
   
   it do
-    should contain_concat_fragment('foo+02.edac.labels.db') \
+    should contain_concat_fragment('edac.labels.db+02_foo.db') \
       .with_content(/^bar$/)
   end
   
@@ -21,7 +21,7 @@ describe 'edac::label' do
     let(:params) { { :order => '03', :content => 'bar' } }
     
     it do
-      should contain_concat_fragment('foo+03.edac.labels.db') \
+      should contain_concat_fragment('edac.labels.db+03_foo.db') \
         .with_content(/^bar$/)
     end
   end

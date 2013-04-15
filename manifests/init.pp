@@ -52,8 +52,8 @@ class edac (
     require     => Package['edac-utils'],
   }
 
-  concat_build { 'labels.db':
-    order   => ['*.edac.labels.db'],
+  concat_build { 'edac.labels.db':
+    order   => ['*.db'],
     target  => $labelsdb_file,
     require => Package['edac-utils'],
     notify  => Service['edac'],
@@ -66,7 +66,7 @@ class edac (
     require => Package['edac-utils'],
   }
 
-  concat_fragment { 'main+01.edac.labels.db':
+  concat_fragment { 'edac.labels.db+01_main.db':
     content => template('edac/labels.db.erb'),
   }
 
