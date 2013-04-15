@@ -9,6 +9,7 @@ describe 'edac' do
   end
 
   it { should contain_class('edac::params') }
+  it { should contain_class('edac::extra') }
 
   it do
     should contain_package('edac-utils').with({
@@ -47,4 +48,5 @@ describe 'edac' do
   end
   
   it { should contain_concat_fragment('edac.labels.db+01_main.db') }
+
 end

@@ -16,6 +16,8 @@
 #
 class edac::params {
 
+  $with_extra_labels              = true
+
   case $::osfamily {
     'RedHat': {
       $edac_utils_package_name    = 'edac-utils'

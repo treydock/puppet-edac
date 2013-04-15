@@ -10,10 +10,10 @@ describe 'edac::label' do
 
   it { should contain_class('edac') }
 
-  it { should contain_concat_fragment('edac.labels.db+02_foo.db') }
+  it { should contain_concat_fragment('edac.labels.db+99_foo.db') }
   
   it do
-    should contain_concat_fragment('edac.labels.db+02_foo.db') \
+    should contain_concat_fragment('edac.labels.db+99_foo.db') \
       .with_content(/^bar$/)
   end
   

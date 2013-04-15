@@ -17,6 +17,8 @@
 #
 # [*labelsdb_file*]
 #
+# [*with_extra_labels*]
+#
 # === Examples
 #
 #  class { edac: }
@@ -34,9 +36,14 @@ class edac (
   $edac_service_name          = $edac::params::edac_service_name,
   $edac_service_hasstatus     = $edac::params::edac_service_hasstatus,
   $edac_service_hasrestart    = $edac::params::edac_service_hasrestart,
-  $labelsdb_file              = $edac::params::labelsdb_file
+  $labelsdb_file              = $edac::params::labelsdb_file,
+  $with_extra_labels          = $edac::params::with_extra_labels
 
 ) inherits edac::params {
+
+  if $with_extra_labels {
+    include edac::extra
+  }
 
   package { 'edac-utils':
     ensure  => 'present',
