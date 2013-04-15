@@ -1,41 +1,73 @@
 # == Class: edac
 #
-# Full description of class edac here.
+# Manage the installation and configuration of EDAC driver installation
+# and configuration.
 #
 # === Parameters
 #
 # Document parameters here.
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# [*edac_utils_package_name*]
 #
-# === Variables
+# [*edac_service_name*]
 #
-# Here you should define a list of variables that this module would require.
+# [*edac_service_hasstatus*]
 #
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
+# [*edac_service_hasrestart*]
+#
+# [*labelsdb_file*]
 #
 # === Examples
 #
-#  class { edac:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ]
-#  }
+#  class { edac: }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Trey Dockendorf <treydock@gmail.com>
 #
 # === Copyright
 #
-# Copyright 2013 Your name here, unless otherwise noted.
+# Copyright 2013 Trey Dockendorf
 #
-class edac {
+class edac (
+  $edac_utils_package_name    = $edac::params::edac_utils_package_name,
+  $edac_service_name          = $edac::params::edac_service_name,
+  $edac_service_hasstatus     = $edac::params::edac_service_hasstatus,
+  $edac_service_hasrestart    = $edac::params::edac_service_hasrestart,
+  $labelsdb_file              = $edac::params::labelsdb_file
 
+) inherits edac::params {
+
+  package { 'edac-utils':
+    ensure  => 'present',
+    name    => $edac_utils_package_name,
+  }
+
+  service { 'edac':
+    ensure      => 'running',
+    name        => $edac_service_name,
+    enable      => true,
+    hasstatus   => $edac_service_hasstatus,
+    hasrestart  => $edac_service_hasrestart,
+    require     => Package['edac-utils'],
+  }
+
+  concat_build { 'labels.db':
+    order   => ['*.edac.labels.db'],
+    target  => $labelsdb_file,
+    require => Package['edac-utils'],
+    notify  => Service['edac'],
+  }
+
+  file { $labelsdb_file:
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Package['edac-utils'],
+  }
+
+  concat_fragment { 'main+01.edac.labels.db':
+    content => template('edac/labels.db.erb'),
+  }
 
 }
