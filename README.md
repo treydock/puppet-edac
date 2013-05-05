@@ -11,6 +11,16 @@ Tested using
 
 ## Usage
 
+For standard edac-utils management
+
+    class { 'edac': }
+
+To add additional labels to labels.db
+
+    edac::label { 'H8DGU':
+      content => template('supermicro/h8dgu.erb'),
+    }
+
 ## Development
 
 ### Dependencies
