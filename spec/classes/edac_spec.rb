@@ -3,9 +3,8 @@ require 'spec_helper'
 describe 'edac' do
 
   let :facts do
-    {
-      :osfamily => 'RedHat',
-    }
+    RSpec.configuration.default_facts.merge({
+    })
   end
 
   it { should contain_class('edac::params') }

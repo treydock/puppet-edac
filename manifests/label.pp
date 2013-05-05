@@ -26,7 +26,7 @@
 #
 define edac::label ($content, $order = 'UNSET') {
 
-  require edac
+  include edac
 
   $order_real = $order ? {
     'UNSET'   => '99',

@@ -2,11 +2,18 @@ require 'spec_helper'
 
 describe 'edac::label' do
   
-  let(:facts) { { :osfamily => 'RedHat' } }
+  let :facts do
+    RSpec.configuration.default_facts.merge({
+    })
+  end
 
-  let(:title) { 'foo' }
+  let :title do
+    'foo'
+  end
 
-  let(:params) { { :content => 'bar' } }
+  let :params do 
+    { :content => 'bar' }
+  end
 
   it { should contain_class('edac') }
 
