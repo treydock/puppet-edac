@@ -26,7 +26,7 @@ RSpec.configure do |c|
 
     # Install module dependencies
     shell('puppet module install puppetlabs/stdlib --modulepath /etc/puppet/modules --force')
-    shell('puppet module install ripienaar/concat --modulepath /etc/puppet/modules --force')
+    shell('puppet module install theforeman/concat_native --modulepath /etc/puppet/modules --force')
     
     # Install osg module
     puppet_module_install(:source => proj_root, :module_name => 'edac')
