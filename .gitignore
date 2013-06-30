@@ -3,5 +3,7 @@
 .rvmrc
 Gemfile.lock
 metadata.json
-spec/fixtures
+spec/fixtures/modules/
+.rspec_system/
+.bundle/
 pkg/
