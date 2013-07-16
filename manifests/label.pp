@@ -9,6 +9,7 @@
 # [*order*]
 #   The order to be set in concat_fragment resource.
 #   Sets the order that the content appears in the file resource.
+#   Default: 99
 #
 # === Examples
 #
@@ -33,8 +34,9 @@ define edac::label ($content, $order = 'UNSET') {
     default   => $order,
   }
 
-  concat_fragment { "edac.labels.db+${order_real}_${name}.db":
+  concat_fragment { "edac.labels.db+${order_real}_${name}":
     content => $content,
+    notify  => Service['edac'],
   }
 
 }

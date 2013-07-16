@@ -6,8 +6,14 @@ Linux kernel EDAC drivers.
 ## Support
 
 Tested using
-* CentOS 5.9
+
 * CentOS 6.4
+* CentOS 5.9
+
+## Dependencies
+
+* [puppetlabs/stdlib](http://forge.puppetlabs.com/puppetlabs/stdlib)
+* [theforeman/concat_native](http://forge.puppetlabs.com/theforeman/concat_native)
 
 ## Usage
 
@@ -21,17 +27,33 @@ To add additional labels to labels.db
       content => template('supermicro/h8dgu.erb'),
     }
 
+The example above is provided by the `edac::extra::supermicro`
+
+## Contributing
+
+The best way to contribute is providing additional labels for motherboards.
+
 ## Development
 
 ### Dependencies
 
-* Ruby 1.8.7
 * Bundler
 
 ### Running tests
 
-1. To install dependencies run `bundle install`
-2. Run tests using `rake spec:all`
+Install Gem dependencies
+
+    bundle install
+
+Run tests
+
+    bundle exec rake ci
+
+### System tests
+
+If you have Vagrant >= 1.1.0 you can system tests
+
+    bundle exec rake spec:system
 
 ## Further Information
 

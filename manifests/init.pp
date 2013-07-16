@@ -8,16 +8,26 @@
 # Document parameters here.
 #
 # [*edac_utils_package_name*]
+#   Package name for edac-utils
 #
 # [*edac_service_name*]
+#   Edac service name.
 #
 # [*edac_service_hasstatus*]
+#   Boolean that sets if the edac service has
+#   the status feature
 #
 # [*edac_service_hasrestart*]
+#   Boolean that sets if the edac service has
+#   the restart feature
 #
 # [*labelsdb_file*]
+#   Path to the labels.db file
 #
 # [*with_extra_labels*]
+#   Boolean that sets if the bundled extra
+#   labels will be included.
+#   Default: true
 #
 # === Examples
 #
@@ -40,6 +50,8 @@ class edac (
   $with_extra_labels          = $edac::params::with_extra_labels
 
 ) inherits edac::params {
+
+  validate_bool($with_extra_labels)
 
   if $with_extra_labels {
     include edac::extra
@@ -67,13 +79,15 @@ class edac (
   }
 
   file { $labelsdb_file:
+    ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     require => Package['edac-utils'],
+    notify  => Service['edac'],
   }
 
-  concat_fragment { 'edac.labels.db+01_main.db':
+  concat_fragment { 'edac.labels.db+01_main':
     content => template('edac/labels.db.erb'),
   }
 

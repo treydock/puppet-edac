@@ -3,16 +3,8 @@ require 'rspec-system-puppet/helpers'
 
 include RSpecSystemPuppet::Helpers
 
-# Project root for the this module's code
-def proj_root
-  File.expand_path(File.join(File.dirname(__FILE__), '..'))
-end
-
-def fixtures_root
-  File.expand_path(File.join(proj_root, 'spec', 'fixtures'))
-end
-
 RSpec.configure do |c|
+  proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   # Enable colour in Jenkins
   c.tty = true
 
@@ -28,7 +20,7 @@ RSpec.configure do |c|
     shell('puppet module install puppetlabs/stdlib --modulepath /etc/puppet/modules --force')
     shell('puppet module install theforeman/concat_native --modulepath /etc/puppet/modules --force')
     
-    # Install osg module
+    # Install edac module
     puppet_module_install(:source => proj_root, :module_name => 'edac')
   end
 end

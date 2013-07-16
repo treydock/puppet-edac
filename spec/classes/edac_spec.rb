@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 describe 'edac' do
+  include_context :defaults
 
   let :facts do
-    RSpec.configuration.default_facts.merge({
-    })
+    default_facts
   end
 
+  it { should create_class('edac') }
   it { should contain_class('edac::params') }
-  it { should contain_class('edac::extra') }
+  it { should include_class('edac::extra') }
 
   it do
     should contain_package('edac-utils').with({
@@ -27,7 +28,7 @@ describe 'edac' do
       'require'     => 'Package[edac-utils]',
     })
   end
-  
+
   it do
     should contain_concat_build('edac.labels.db').with({
       'order'   => ['*.db'],
@@ -36,16 +37,19 @@ describe 'edac' do
       'notify'  => 'Service[edac]',
     })
   end
-  
+
   it do
     should contain_file('/etc/edac/labels.db').with({
+      'ensure'  => 'present',
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
       'require' => 'Package[edac-utils]',
+      'notify'  => 'Service[edac]',
     })
   end
-  
-  it { should contain_concat_fragment('edac.labels.db+01_main.db') }
 
+  it do
+    should contain_concat_fragment('edac.labels.db+01_main')
+  end
 end

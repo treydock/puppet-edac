@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe 'edac::label' do
-  
+  include_context :defaults
+
   let :facts do
-    RSpec.configuration.default_facts.merge({
-    })
+    default_facts
   end
 
   let :title do
@@ -15,20 +15,19 @@ describe 'edac::label' do
     { :content => 'bar' }
   end
 
-  it { should contain_class('edac') }
+  it { should include_class('edac') }
 
-  it { should contain_concat_fragment('edac.labels.db+99_foo.db') }
-  
   it do
-    should contain_concat_fragment('edac.labels.db+99_foo.db') \
+    should contain_concat_fragment('edac.labels.db+99_foo') \
+      .with_notify('Service[edac]') \
       .with_content(/^bar$/)
   end
-  
+
   context 'with defined order' do
     let(:params) { { :order => '03', :content => 'bar' } }
     
     it do
-      should contain_concat_fragment('edac.labels.db+03_foo.db') \
+      should contain_concat_fragment('edac.labels.db+03_foo') \
         .with_content(/^bar$/)
     end
   end
