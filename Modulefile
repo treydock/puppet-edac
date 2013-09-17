@@ -1,5 +1,5 @@
 name    'treydock-edac'
-version '0.0.2'
+version '0.0.3'
 source 'git://github.com/treydock/puppet-edac'
 author 'treydock'
 license 'Apache License, Version 2.0'
