@@ -74,7 +74,7 @@ class edac (
     order   => ['*.db'],
     target  => $labelsdb_file,
     require => Package['edac-utils'],
-    notify  => File[$labelsdb_file],
+    notify  => [Service['edac'],File[$labelsdb_file]],
   }
 
   file { $labelsdb_file:
@@ -83,8 +83,7 @@ class edac (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Concat_build['edac.labels'],
-    notify  => Service['edac'],
+    require => [Package['edac-utils'],Concat_build['edac.labels']],
   }
 
   concat_fragment { 'edac.labels+01_main.db':

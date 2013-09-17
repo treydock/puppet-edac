@@ -34,7 +34,7 @@ describe 'edac' do
       'order'   => ['*.db'],
       'target'  => '/etc/edac/labels.db',
       'require' => 'Package[edac-utils]',
-      'notify'  => 'File[/etc/edac/labels.db]',
+      'notify'  => ['Service[edac]','File[/etc/edac/labels.db]'],
     })
   end
 
@@ -44,8 +44,7 @@ describe 'edac' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Concat_build[edac.labels]',
-      'notify'  => 'Service[edac]',
+      'require' => ['Package[edac-utils]','Concat_build[edac.labels]'],
     })
   end
 
