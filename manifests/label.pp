@@ -34,9 +34,8 @@ define edac::label ($content, $order = 'UNSET') {
     default   => $order,
   }
 
-  concat_fragment { "edac.labels.db+${order_real}_${name}":
+  concat_fragment { "edac.labels+${order_real}_${name}.db":
     content => $content,
-    notify  => Service['edac'],
   }
 
 }

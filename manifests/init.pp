@@ -48,7 +48,6 @@ class edac (
   $edac_service_hasrestart    = $edac::params::edac_service_hasrestart,
   $labelsdb_file              = $edac::params::labelsdb_file,
   $with_extra_labels          = $edac::params::with_extra_labels
-
 ) inherits edac::params {
 
   validate_bool($with_extra_labels)
@@ -71,23 +70,24 @@ class edac (
     require     => Package['edac-utils'],
   }
 
-  concat_build { 'edac.labels.db':
+  concat_build { 'edac.labels':
     order   => ['*.db'],
     target  => $labelsdb_file,
     require => Package['edac-utils'],
-    notify  => Service['edac'],
+    notify  => File[$labelsdb_file],
   }
 
   file { $labelsdb_file:
     ensure  => present,
+    source  => concat_output('edac.labels'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['edac-utils'],
+    require => Concat_build['edac.labels'],
     notify  => Service['edac'],
   }
 
-  concat_fragment { 'edac.labels.db+01_main':
+  concat_fragment { 'edac.labels+01_main.db':
     content => template('edac/labels.db.erb'),
   }
 

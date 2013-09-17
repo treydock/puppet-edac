@@ -1,6 +1,6 @@
 require 'spec_helper_system'
 
-describe 'basic tests:' do
+describe 'installation tasks:' do
   context puppet_agent do
     its(:stderr) { should be_empty }
     its(:exit_code) { should_not == 1 }

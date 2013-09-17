@@ -30,11 +30,11 @@ describe 'edac' do
   end
 
   it do
-    should contain_concat_build('edac.labels.db').with({
+    should contain_concat_build('edac.labels').with({
       'order'   => ['*.db'],
       'target'  => '/etc/edac/labels.db',
       'require' => 'Package[edac-utils]',
-      'notify'  => 'Service[edac]',
+      'notify'  => 'File[/etc/edac/labels.db]',
     })
   end
 
@@ -44,12 +44,12 @@ describe 'edac' do
       'owner'   => 'root',
       'group'   => 'root',
       'mode'    => '0644',
-      'require' => 'Package[edac-utils]',
+      'require' => 'Concat_build[edac.labels]',
       'notify'  => 'Service[edac]',
     })
   end
 
   it do
-    should contain_concat_fragment('edac.labels.db+01_main')
+    should contain_concat_fragment('edac.labels+01_main.db')
   end
 end

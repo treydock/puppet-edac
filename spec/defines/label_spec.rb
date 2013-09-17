@@ -18,17 +18,14 @@ describe 'edac::label' do
   it { should include_class('edac') }
 
   it do
-    should contain_concat_fragment('edac.labels.db+99_foo') \
-      .with_notify('Service[edac]') \
-      .with_content(/^bar$/)
+    should contain_concat_fragment('edac.labels+99_foo.db').with_content(/^bar$/)
   end
 
   context 'with defined order' do
     let(:params) { { :order => '03', :content => 'bar' } }
     
     it do
-      should contain_concat_fragment('edac.labels.db+03_foo') \
-        .with_content(/^bar$/)
+      should contain_concat_fragment('edac.labels+03_foo.db').with_content(/^bar$/)
     end
   end
 end
