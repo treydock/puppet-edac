@@ -14,4 +14,19 @@ describe 'edac class:' do
       its(:exit_code) { should be_zero }
     end
   end
+
+  describe package('edac-utils') do
+    it { should be_installed }
+  end
+
+  describe service('edac') do
+    it { should be_enabled }
+    it { should be_running }
+  end
+
+  describe file('/etc/edac/labels.db') do
+    it { should be_file }
+    it { should contain 'Vendor: Supermicro' }
+    it { should contain 'Model: H8DGU' }
+  end
 end

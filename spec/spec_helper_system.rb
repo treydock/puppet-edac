@@ -1,7 +1,10 @@
 require 'rspec-system/spec_helper'
 require 'rspec-system-puppet/helpers'
+require 'rspec-system-serverspec/helpers'
 
 include RSpecSystemPuppet::Helpers
+include Serverspec::Helper::RSpecSystem
+include Serverspec::Helper::DetectOS
 
 RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
