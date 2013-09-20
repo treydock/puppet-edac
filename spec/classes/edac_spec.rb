@@ -32,7 +32,6 @@ describe 'edac' do
   it do
     should contain_concat_build('edac.labels').with({
       'order'   => ['*.db'],
-      'target'  => '/etc/edac/labels.db',
       'require' => 'Package[edac-utils]',
       'notify'  => ['Service[edac]','File[/etc/edac/labels.db]'],
     })
