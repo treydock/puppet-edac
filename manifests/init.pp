@@ -72,7 +72,6 @@ class edac (
 
   concat_build { 'edac.labels':
     order   => ['*.db'],
-    target  => $labelsdb_file,
     require => Package['edac-utils'],
     notify  => [Service['edac'],File[$labelsdb_file]],
   }
