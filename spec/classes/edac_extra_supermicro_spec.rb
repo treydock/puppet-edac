@@ -14,6 +14,8 @@ describe 'edac::extra::supermicro' do
       'order'   => '02',
     }) \
       .with_content(/^Vendor: Supermicro$/) \
-      .with_content(/^\s+Model: H8DGU$/)
+      .with_content(/^\s+Model: H8DGU$/) \
+      .with_content(/^\s+Model: H8QG6, H8QGi$/) \
+      .with_content(/^\s+Model: X9DRi-LN4\+\/X9DR3-LN4\+$/)
   end
 end
