@@ -18,8 +18,8 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'edac')
 
     hosts.each do |host|
-      on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet('module', 'install', 'theforeman-concat_native'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-stdlib', '--version', '">=3.2.0 <5.0.0"'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'theforeman-concat_native', '--version', '"1.x"'), { :acceptable_exit_codes => [0,1] }
     end
   end
 end
