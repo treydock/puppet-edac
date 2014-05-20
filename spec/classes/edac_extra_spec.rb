@@ -8,6 +8,6 @@ describe 'edac::extra' do
   end
   
   it { should create_class('edac::extra') }
-  it { should include_class('edac::extra::supermicro') }
+  it { should contain_class('edac::extra::supermicro') }
 
 end

@@ -15,7 +15,9 @@ describe 'edac::label' do
     { :content => 'bar' }
   end
 
-  it { should include_class('edac') }
+  it { should contain_class('edac') }
+
+  it { should create_edac__label('foo') }
 
   it do
     should contain_concat_fragment('edac.labels+99_foo.db').with_content(/^bar$/)
@@ -23,7 +25,7 @@ describe 'edac::label' do
 
   context 'with defined order' do
     let(:params) { { :order => '03', :content => 'bar' } }
-    
+
     it do
       should contain_concat_fragment('edac.labels+03_foo.db').with_content(/^bar$/)
     end

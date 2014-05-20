@@ -1,4 +1,4 @@
-require 'spec_helper_system'
+require 'spec_helper_acceptance'
 
 describe 'edac class:' do
   shared_examples 'edac' do
@@ -13,14 +13,13 @@ describe 'edac class:' do
   end
 
   context 'with_extra_labels => false' do
-    pp = "class { 'edac': with_extra_labels => false }"
-    
-    context puppet_apply(pp) do
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should_not == 1 }
-      its(:refresh) { should be_nil }
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should be_zero }
+    it 'should run succcessfully' do
+      pp = <<-EOS
+        class { 'edac': with_extra_labels => false }
+      EOS
+
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes => true)
     end
 
     it_behaves_like "edac"
@@ -33,16 +32,13 @@ describe 'edac class:' do
   end
 
   context 'with default parameters' do
-    pp = <<-EOS
-      class { 'edac': }
-    EOS
+    it 'should run succcessfully' do
+      pp = <<-EOS
+        class { 'edac': }
+      EOS
 
-    context puppet_apply(pp) do
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should_not == 1 }
-      its(:refresh) { should be_nil }
-      its(:stderr) { should be_empty }
-      its(:exit_code) { should be_zero }
+      apply_manifest(pp, :catch_failures => true)
+      apply_manifest(pp, :catch_changes => true)
     end
 
     it_behaves_like "edac"

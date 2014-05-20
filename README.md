@@ -35,25 +35,24 @@ The best way to contribute is providing additional labels for motherboards.
 
 ## Development
 
-### Dependencies
+### Testing
 
-* Bundler
+Testing requires the following dependencies:
 
-### Running tests
+* rake
+* bundler
 
-Install Gem dependencies
+Install gem dependencies
 
     bundle install
 
-Run tests
+Run unit tests
 
-    bundle exec rake ci
+    bundle exec rake test
 
-### System tests
+If you have Vagrant >= 1.2.0 installed you can run system tests
 
-If you have Vagrant >= 1.1.0 you can system tests
-
-    bundle exec rake spec:system
+    bundle exec rake acceptance
 
 ## Further Information
 

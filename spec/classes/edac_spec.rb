@@ -9,7 +9,7 @@ describe 'edac' do
 
   it { should create_class('edac') }
   it { should contain_class('edac::params') }
-  it { should include_class('edac::extra') }
+  it { should contain_class('edac::extra') }
 
   it do
     should contain_package('edac-utils').with({
