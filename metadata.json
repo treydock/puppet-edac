@@ -1,6 +1,6 @@
 {
   "name": "treydock-edac",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "treydock",
   "summary": "Manage EDAC utility installation and configuration",
   "description": "Manage EDAC utility installation and configuration",
