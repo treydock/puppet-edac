@@ -6,15 +6,11 @@ task :default do
   sh %{rake -T}
 end
 
-desc "Run rspec-puppet and puppet-lint tasks"
-task :ci => [
-  :spec,
-  :lint,
-]
+desc "Run syntax, lint and spec tasks."
+task :test => [:syntax, :lint, :spec]
 
-# Disable puppet-lint checks
-PuppetLint.configuration.send("disable_80chars")
-PuppetLint.configuration.send("disable_class_inherits_from_params_class")
+desc "Run syntax, lint and spec_standalone tasks."
+task :test_standalone => [:spec_prep, :syntax, :lint, :spec_standalone]
 
 exclude_paths = [
   "pkg/**/*",
@@ -22,17 +18,14 @@ exclude_paths = [
   "spec/**/*",
 ]
 
-PuppetLint.configuration.ignore_paths = exclude_paths
-PuppetSyntax.exclude_paths = exclude_paths
-
-desc "Run acceptance tests"
-RSpec::Core::RakeTask.new(:acceptance) do |t|
-  t.pattern = 'spec/acceptance'
+Rake::Task[:lint].clear
+PuppetLint::RakeTask.new :lint do |config|
+  config.ignore_paths = exclude_paths
+  config.fail_on_warnings = true
+  config.log_format = "%{path}:%{linenumber}:%{check}:%{KIND}:%{message}"
+  config.disable_checks = ["80chars", "class_inherits_from_params_class"]
+  #config.relative = true
 end
+PuppetLint.configuration.relative = true
 
-desc "Run syntax, lint, and spec tests."
-task :test => [
-  :syntax,
-  :lint,
-  :spec,
-]
+PuppetSyntax.exclude_paths = exclude_paths

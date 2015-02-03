@@ -57,17 +57,17 @@ class edac (
   }
 
   package { 'edac-utils':
-    ensure  => 'present',
-    name    => $edac_utils_package_name,
+    ensure => 'present',
+    name   => $edac_utils_package_name,
   }
 
   service { 'edac':
-    ensure      => 'running',
-    name        => $edac_service_name,
-    enable      => true,
-    hasstatus   => $edac_service_hasstatus,
-    hasrestart  => $edac_service_hasrestart,
-    require     => Package['edac-utils'],
+    ensure     => 'running',
+    name       => $edac_service_name,
+    enable     => true,
+    hasstatus  => $edac_service_hasstatus,
+    hasrestart => $edac_service_hasrestart,
+    require    => Package['edac-utils'],
   }
 
   concat_build { 'edac.labels':
