@@ -46,6 +46,7 @@ class edac (
   $edac_service_name          = $edac::params::edac_service_name,
   $edac_service_hasstatus     = $edac::params::edac_service_hasstatus,
   $edac_service_hasrestart    = $edac::params::edac_service_hasrestart,
+  $edac_service_status        = $edac::params::edac_service_status,
   $labelsdb_file              = $edac::params::labelsdb_file,
   $with_extra_labels          = $edac::params::with_extra_labels
 ) inherits edac::params {
@@ -67,6 +68,7 @@ class edac (
     enable     => true,
     hasstatus  => $edac_service_hasstatus,
     hasrestart => $edac_service_hasrestart,
+    status     => $edac_service_status,
     require    => Package['edac-utils'],
   }
 

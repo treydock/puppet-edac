@@ -25,6 +25,7 @@ describe 'edac' do
       'enable'      => 'true',
       'hasstatus'   => 'true',
       'hasrestart'  => 'true',
+      'status'      => 'edac-ctl --status --quiet',
       'require'     => 'Package[edac-utils]',
     })
   end

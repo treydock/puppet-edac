@@ -24,6 +24,7 @@ class edac::params {
       $edac_service_name          = 'edac'
       $edac_service_hasstatus     = true
       $edac_service_hasrestart    = true
+      $edac_service_status        = 'edac-ctl --status --quiet'
       $labelsdb_file              = '/etc/edac/labels.db'
     }
 
