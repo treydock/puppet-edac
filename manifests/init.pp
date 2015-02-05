@@ -44,6 +44,7 @@
 class edac (
   $edac_utils_package_name    = $edac::params::edac_utils_package_name,
   $edac_service_name          = $edac::params::edac_service_name,
+  $edac_service_enable        = true,
   $edac_service_hasstatus     = $edac::params::edac_service_hasstatus,
   $edac_service_hasrestart    = $edac::params::edac_service_hasrestart,
   $edac_service_status        = $edac::params::edac_service_status,
@@ -51,10 +52,18 @@ class edac (
   $with_extra_labels          = $edac::params::with_extra_labels
 ) inherits edac::params {
 
-  validate_bool($with_extra_labels)
+  validate_bool($edac_service_enable, $with_extra_labels)
 
   if $with_extra_labels {
     include edac::extra
+  }
+
+  if $edac_service_enable {
+    $service_ensure = 'running'
+    $service_enable = true
+  } else {
+    $service_ensure = 'stopped'
+    $service_enable = false
   }
 
   package { 'edac-utils':
@@ -63,9 +72,9 @@ class edac (
   }
 
   service { 'edac':
-    ensure     => 'running',
+    ensure     => $service_ensure,
     name       => $edac_service_name,
-    enable     => true,
+    enable     => $service_enable,
     hasstatus  => $edac_service_hasstatus,
     hasrestart => $edac_service_hasrestart,
     status     => $edac_service_status,
