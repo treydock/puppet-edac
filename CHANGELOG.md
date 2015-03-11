@@ -2,6 +2,24 @@
 
 Release notes for the treydock-edac module.
 
+#### TBD - Release 1.0.0
+
+This release contains backwards incompatible changes.
+
+##### Backwards incompatible changes
+
+* Remove the following parameters
+  * `edac_service_hasstatus`
+  * `edac_service_hasrestart`
+* Only manage the edac service's `enable` property
+
+##### Features
+
+* Add `edac_service_enable` parameter that determines if the edac service should start on boot
+* Add `ensure` parameter
+* Use an Exec resource to register labels when labels.db is modified
+* Added additional labels that were pulled from edac source code
+
 ------------------------------------------
 
 #### 2015-02-03 Release 0.1.1
