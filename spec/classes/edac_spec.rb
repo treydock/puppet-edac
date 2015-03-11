@@ -37,23 +37,34 @@ describe 'edac' do
       it do
         should contain_concat_build('edac.labels').with({
           :order    => ['*.db'],
+          :before   => 'File[/etc/edac/labels.db]',
           :require  => 'Package[edac-utils]',
-          #:notify   => 'File[/etc/edac/labels.db]',
-        })
-      end
-
-      it do
-        should contain_file('/etc/edac/labels.db').with({
-          :ensure   => 'present',
-          :owner    => 'root',
-          :group    => 'root',
-          :mode     => '0644',
-          :require  => 'Concat_build[edac.labels]',
         })
       end
 
       it do
         should contain_concat_fragment('edac.labels+01_main.db')
+      end
+
+      it do
+        should contain_file('/etc/edac/labels.db').with({
+          :ensure   => 'file',
+          :owner    => 'root',
+          :group    => 'root',
+          :mode     => '0644',
+        })
+      end
+
+      context 'when ensure => absent' do
+        let(:params) {{ :ensure => 'absent' }}
+
+        it { should_not contain_class('edac::extra') }
+        it { should contain_package('edac-utils').with_ensure('absent') }
+        it { should_not contain_service('edac') }
+        it { should contain_exec('edac-register-labels').without_subscribe }
+        it { should_not contain_concat_build('edac.labels') }
+        it { should_not contain_concat_fragment('edac.labels+01_main.db') }
+        it { should contain_file('/etc/edac/labels.db').with_ensure('absent') }
       end
     end
   end
