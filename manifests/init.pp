@@ -45,9 +45,6 @@ class edac (
   $edac_utils_package_name    = $edac::params::edac_utils_package_name,
   $edac_service_name          = $edac::params::edac_service_name,
   $edac_service_enable        = true,
-  $edac_service_hasstatus     = $edac::params::edac_service_hasstatus,
-  $edac_service_hasrestart    = $edac::params::edac_service_hasrestart,
-  $edac_service_status        = $edac::params::edac_service_status,
   $labelsdb_file              = $edac::params::labelsdb_file,
   $with_extra_labels          = $edac::params::with_extra_labels
 ) inherits edac::params {
@@ -58,33 +55,29 @@ class edac (
     include edac::extra
   }
 
-  if $edac_service_enable {
-    $service_ensure = 'running'
-    $service_enable = true
-  } else {
-    $service_ensure = 'stopped'
-    $service_enable = false
-  }
-
   package { 'edac-utils':
     ensure => 'present',
     name   => $edac_utils_package_name,
   }
 
   service { 'edac':
-    ensure     => $service_ensure,
-    name       => $edac_service_name,
-    enable     => $service_enable,
-    hasstatus  => $edac_service_hasstatus,
-    hasrestart => $edac_service_hasrestart,
-    status     => $edac_service_status,
-    require    => Package['edac-utils'],
+    ensure  => undef,
+    enable  => $edac_service_enable,
+    require => Package['edac-utils'],
+  }
+
+  exec { 'edac-register-labels':
+    path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+    command     => 'edac-ctl --register-labels --quiet',
+    logoutput   => false,
+    refreshonly => true,
+    subscribe   => File[$labelsdb_file],
   }
 
   concat_build { 'edac.labels':
     order   => ['*.db'],
     require => Package['edac-utils'],
-    notify  => [Service['edac'],File[$labelsdb_file]],
+    #notify  => File[$labelsdb_file],
   }
 
   file { $labelsdb_file:
@@ -93,7 +86,7 @@ class edac (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => [Package['edac-utils'],Concat_build['edac.labels']],
+    require => Concat_build['edac.labels'],
   }
 
   concat_fragment { 'edac.labels+01_main.db':

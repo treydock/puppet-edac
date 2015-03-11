@@ -1,25 +1,14 @@
 require 'puppetlabs_spec_helper/module_spec_helper'
+require 'rspec-puppet-facts'
 
-begin
-  require 'simplecov'
-  require 'coveralls'
-  SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-  SimpleCov.start do
-    add_filter '/spec/'
-  end
-rescue Exception => e
-  warn "Coveralls disabled"
+include RspecPuppetFacts
+
+dir = File.expand_path(File.dirname(__FILE__))
+Dir["#{dir}/support/**/*.rb"].sort.each { |f| require f }
+
+# Workaround for no method in rspec-puppet to pass undef through :params
+class Undef
+  def inspect; 'undef'; end
 end
 
 at_exit { RSpec::Puppet::Coverage.report! }
-
-shared_context :defaults do
-  let :default_facts do
-    {
-      :osfamily               => 'RedHat',
-      :operatingsystem        => 'CentOS',
-      :operatingsystemrelease => '6.4',
-      :concat_basedir         => '/var/lib/puppet/concat',
-    }
-  end
-end

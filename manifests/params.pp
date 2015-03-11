@@ -22,9 +22,6 @@ class edac::params {
     'RedHat': {
       $edac_utils_package_name    = 'edac-utils'
       $edac_service_name          = 'edac'
-      $edac_service_hasstatus     = true
-      $edac_service_hasrestart    = true
-      $edac_service_status        = 'edac-ctl --status --quiet'
       $labelsdb_file              = '/etc/edac/labels.db'
     }
 
