@@ -65,6 +65,7 @@ describe 'edac' do
         it { should_not contain_concat_build('edac.labels') }
         it { should_not contain_concat_fragment('edac.labels+01_main.db') }
         it { should contain_file('/etc/edac/labels.db').with_ensure('absent') }
+        it { should contain_file('/etc/edac/labels.db').without_source }
       end
     end
   end

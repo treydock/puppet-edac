@@ -56,11 +56,13 @@ class edac (
     'present': {
       $package_ensure = 'present'
       $file_ensure    = 'file'
+      $file_source    = concat_output('edac.labels')
       $exec_subscribe = File[$labelsdb_file]
     }
     'absent': {
       $package_ensure = 'absent'
       $file_ensure    = 'absent'
+      $file_source    = undef
       $exec_subscribe = undef
     }
     default: {
@@ -107,7 +109,7 @@ class edac (
 
   file { $labelsdb_file:
     ensure => $file_ensure,
-    source => concat_output('edac.labels'),
+    source => $file_source,
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
