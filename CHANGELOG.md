@@ -2,7 +2,7 @@
 
 Release notes for the treydock-edac module.
 
-#### TBD - Release 1.0.0
+#### 2015-08-23 - Release 1.0.0
 
 This release contains backwards incompatible changes.
 
