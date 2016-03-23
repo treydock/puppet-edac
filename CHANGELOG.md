@@ -2,6 +2,14 @@
 
 Release notes for the treydock-edac module.
 
+#### TBD - Release 1.1.0
+
+##### Features
+
+* Switch from using theforeman/concat_native to using puppetlabs/concat
+
+------------------------------------------
+
 #### 2015-08-23 - Release 1.0.0
 
 This release contains backwards incompatible changes.

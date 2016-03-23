@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'edac::label' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) { facts.merge(:concat_basedir => '/dne') }
       let(:title) { 'foo' }
       let(:params) {{ :content => 'bar' }}
 
@@ -12,14 +12,18 @@ describe 'edac::label' do
       it { should create_edac__label('foo') }
 
       it do
-        should contain_concat_fragment('edac.labels+99_foo.db').with_content(/^bar$/)
+        should contain_concat__fragment('edac.labels-foo').with({
+          :target   => 'edac.labels',
+          :content  => /^bar$/,
+          :order    => '99',
+        })
       end
 
       context 'with defined order' do
         let(:params) { { :order => '03', :content => 'bar' } }
 
         it do
-          should contain_concat_fragment('edac.labels+03_foo.db').with_content(/^bar$/)
+          should contain_concat__fragment('edac.labels-foo').with_order('03')
         end
       end
     end

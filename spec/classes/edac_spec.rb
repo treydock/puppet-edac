@@ -3,8 +3,9 @@ require 'spec_helper'
 describe 'edac' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let(:facts) { facts }
+      let(:facts) { facts.merge(:concat_basedir => '/dne') }
 
+      it { should compile.with_all_deps }
       it { should create_class('edac') }
       it { should contain_class('edac::params') }
       it { should contain_class('edac::extra') }
@@ -30,28 +31,26 @@ describe 'edac' do
           :command      => 'edac-ctl --register-labels --quiet',
           :logoutput    => 'false',
           :refreshonly  => 'true',
-          :subscribe    => 'File[/etc/edac/labels.db]',
+          :subscribe    => 'Concat[edac.labels]',
         })
       end
 
       it do
-        should contain_concat_build('edac.labels').with({
-          :order    => ['*.db'],
-          :before   => 'File[/etc/edac/labels.db]',
+        should contain_concat('edac.labels').with({
+          :ensure   => 'present',
+          :path     => '/etc/edac/labels.db',
+          :owner    => 'root',
+          :group    => 'root',
+          :mode     => '0644',
           :require  => 'Package[edac-utils]',
         })
       end
 
       it do
-        should contain_concat_fragment('edac.labels+01_main.db')
-      end
-
-      it do
-        should contain_file('/etc/edac/labels.db').with({
-          :ensure   => 'file',
-          :owner    => 'root',
-          :group    => 'root',
-          :mode     => '0644',
+        should contain_concat__fragment('edac.labels-main').with({
+          :target => 'edac.labels',
+          :source => 'puppet:///modules/edac/labels.db',
+          :order  => '1',
         })
       end
 
@@ -62,10 +61,7 @@ describe 'edac' do
         it { should contain_package('edac-utils').with_ensure('absent') }
         it { should_not contain_service('edac') }
         it { should contain_exec('edac-register-labels').without_subscribe }
-        it { should_not contain_concat_build('edac.labels') }
-        it { should_not contain_concat_fragment('edac.labels+01_main.db') }
-        it { should contain_file('/etc/edac/labels.db').with_ensure('absent') }
-        it { should contain_file('/etc/edac/labels.db').without_source }
+        it { should contain_concat('edac.labels').with_ensure('absent') }
       end
     end
   end

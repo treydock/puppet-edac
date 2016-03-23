@@ -25,7 +25,7 @@
 #
 # Copyright 2013 Trey Dockendorf
 #
-define edac::label ($content, $order = 'UNSET') {
+define edac::label ($content = undef, $source = undef, $order = 'UNSET') {
 
   include edac
 
@@ -34,8 +34,11 @@ define edac::label ($content, $order = 'UNSET') {
     default   => $order,
   }
 
-  concat_fragment { "edac.labels+${order_real}_${name}.db":
+  concat::fragment { "edac.labels-${name}":
+    target  => 'edac.labels',
     content => $content,
+    source  => $source,
+    order   => $order_real
   }
 
 }

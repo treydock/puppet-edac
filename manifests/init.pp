@@ -55,14 +55,10 @@ class edac (
   case $ensure {
     'present': {
       $package_ensure = 'present'
-      $file_ensure    = 'file'
-      $file_source    = concat_output('edac.labels')
-      $exec_subscribe = File[$labelsdb_file]
+      $exec_subscribe = Concat['edac.labels']
     }
     'absent': {
       $package_ensure = 'absent'
-      $file_ensure    = 'absent'
-      $file_source    = undef
       $exec_subscribe = undef
     }
     default: {
@@ -95,24 +91,19 @@ class edac (
     subscribe   => $exec_subscribe,
   }
 
-  if $ensure == 'present' {
-    concat_build { 'edac.labels':
-      order   => ['*.db'],
-      before  => File[$labelsdb_file],
-      require => Package['edac-utils'],
-    }
-
-    concat_fragment { 'edac.labels+01_main.db':
-      content => template('edac/labels.db.erb'),
-    }
+  concat { 'edac.labels':
+    ensure  => $ensure,
+    path    => $labelsdb_file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Package['edac-utils'],
   }
 
-  file { $labelsdb_file:
-    ensure => $file_ensure,
-    source => $file_source,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+  concat::fragment { 'edac.labels-main':
+    target => 'edac.labels',
+    source => 'puppet:///modules/edac/labels.db',
+    order  => '1'
   }
 
 }

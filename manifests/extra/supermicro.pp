@@ -13,8 +13,8 @@
 class edac::extra::supermicro {
 
   edac::label { 'edac::extra::supermicro':
-    content => template('edac/supermicro.db.erb'),
-    order   => '02',
+    source => 'puppet:///modules/edac/supermicro.db',
+    order  => '2',
   }
 
 }
